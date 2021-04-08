@@ -1,14 +1,14 @@
 <template>
     <div :class="classes">
-        <input ref="input" :type="_type" :name="name"
+        <input ref="input" :type="_type" :name="name" :id="id"
                :checked="shouldBeChecked" :value="value" @change="updateInput"
                :disabled="_disabled" :required="_required"/>
-        <div :class="onClasses">
+        <span :class="onClasses">
             <slot name="extra"></slot>
-            <label>
+            <label :for="id">
                 <slot></slot>
             </label>
-        </div>
+        </span>
         <div v-if="_toggle" :class="offClasses">
             <slot name="off-extra"></slot>
             <slot name="off-label"></slot>
@@ -166,6 +166,17 @@
                     classes[`p-${this.indeterminateColor}`] = true;
 
                 return classes;
+            },
+            id() {
+                let s = '';
+                const length = 8;
+                Array.from({ length }).some(() => {
+                    s += Math.random()
+                    .toString(36)
+                    .slice(2);
+                    return s.length >= length;
+                });
+                return s.slice(0, length);
             }
         },
 
